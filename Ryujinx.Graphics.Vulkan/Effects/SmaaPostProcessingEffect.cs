@@ -41,6 +41,7 @@ namespace Ryujinx.Graphics.Vulkan.Effects
             _device = device;
             _renderer = renderer;
             _quality = quality;
+
             Initialize();
         }
 
@@ -190,13 +191,13 @@ namespace Ryujinx.Graphics.Vulkan.Effects
                 SwizzleComponent.Alpha);
 
             var areaTexture = EmbeddedResources.Read("Ryujinx.Graphics.Vulkan/Effects/Textures/smaa_blend.spirv");
-            var ssearchTexBytes = EmbeddedResources.Read("Ryujinx.Graphics.Vulkan/Effects/Textures/smaa_search_texture");
+            var searchTextue = EmbeddedResources.Read("Ryujinx.Graphics.Vulkan/Effects/Textures/smaa_search_texture");
 
             _areaTexture = _renderer.CreateTexture(areaInfo, 1) as TextureView;
             _searchTexture = _renderer.CreateTexture(searchInfo, 1) as TextureView;
 
             _areaTexture.SetData(areaTexture);
-            _searchTexture.SetData(ssearchTexBytes);
+            _searchTexture.SetData(searchTextue);
         }
 
         public TextureView Run(TextureView view, CommandBufferScoped cbs, int width, int height)

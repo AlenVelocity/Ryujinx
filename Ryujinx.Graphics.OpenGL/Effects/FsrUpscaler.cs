@@ -42,6 +42,7 @@ namespace Ryujinx.Graphics.OpenGL.Effects
         public FsrUpscaler(OpenGLRenderer renderer, IPostProcessingEffect filter)
         {
             Initialize();
+
             _renderer = renderer;
         }
 

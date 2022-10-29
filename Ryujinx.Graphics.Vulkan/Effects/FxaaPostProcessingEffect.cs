@@ -21,6 +21,7 @@ namespace Ryujinx.Graphics.Vulkan.Effects
         {
             _renderer = renderer;
             _pipeline = new PipelineHelperShader(renderer, device);
+
             Initialize();
         }
 

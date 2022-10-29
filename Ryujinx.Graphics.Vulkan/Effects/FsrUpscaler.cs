@@ -32,6 +32,7 @@ namespace Ryujinx.Graphics.Vulkan.Effects
         {
             _device = device;
             _renderer = renderer;
+
             Initialize();
         }
 

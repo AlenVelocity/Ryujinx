@@ -35,7 +35,7 @@ namespace Ryujinx.Graphics.GAL.Multithreading
 
         public void SetAntiAliasing(AntiAliasing effect) { }
 
-        public void SetUpscaler(UpscaleType scalerType) { }
+        public void SetUpscaler(UpscaleType type) { }
 
         public void SetUpscalerLevel(float level) { }
     }

@@ -18,6 +18,7 @@ namespace Ryujinx.Graphics.OpenGL.Effects
         public FxaaPostProcessingEffect(OpenGLRenderer renderer)
         {
             Initialize();
+
             _renderer = renderer;
         }
 
@@ -47,6 +48,7 @@ namespace Ryujinx.Graphics.OpenGL.Effects
                 _textureStorage = new TextureStorage(_renderer, view.Info, view.ScaleFactor);
                 _textureStorage.CreateDefaultView();
             }
+
             var textureView = _textureStorage.CreateView(view.Info, 0, 0) as TextureView;
 
             int previousProgram = GL.GetInteger(GetPName.CurrentProgram);

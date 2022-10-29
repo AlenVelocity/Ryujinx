@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Effects\Textures\smaa_area_texture" />
+    <None Remove="Effects\Textures\smaa_search_texture" />
     <None Remove="Shaders\fsr_sharpening.glsl" />
     <None Remove="Shaders\smaa.hlsl" />
     <None Remove="Shaders\smaa_blend.glsl" />
@@ -18,6 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Effects\Textures\smaa_area_texture" />
+    <EmbeddedResource Include="Effects\Textures\smaa_search_texture" />
     <EmbeddedResource Include="Shaders\fsr_sharpening.glsl" />
     <EmbeddedResource Include="Shaders\fxaa.glsl" />
     <EmbeddedResource Include="Shaders\smaa.hlsl" />

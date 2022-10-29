@@ -12,7 +12,7 @@ namespace Ryujinx.Graphics.GAL
 
         void SetAntiAliasing(AntiAliasing antialiasing);
 
-        void SetUpscaler(UpscaleType scalerType);
+        void SetUpscaler(UpscaleType type);
 
         void SetUpscalerLevel(float level);
     }

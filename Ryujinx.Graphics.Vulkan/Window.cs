@@ -427,14 +427,14 @@ namespace Ryujinx.Graphics.Vulkan
             _updateEffect = true;
         }
 
-        public override void SetUpscaler(UpscaleType upscalerType)
+        public override void SetUpscaler(UpscaleType type)
         {
-            if (_currentUpscaler == upscalerType && _effect != null)
+            if (_currentUpscaler == type && _effect != null)
             {
                 return;
             }
 
-            _currentUpscaler = upscalerType;
+            _currentUpscaler = type;
 
             _updateUpscaler = true;
         }
@@ -501,7 +501,6 @@ namespace Ryujinx.Graphics.Vulkan
         public override void SetUpscalerLevel(float level)
         {
             _upscalerLevel = level;
-
             _updateUpscaler = true;
         }
 

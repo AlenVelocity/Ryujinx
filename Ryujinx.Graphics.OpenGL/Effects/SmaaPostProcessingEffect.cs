@@ -8,6 +8,11 @@ namespace Ryujinx.Graphics.OpenGL.Effects.Smaa
 {
     internal partial class SmaaPostProcessingEffect : IPostProcessingEffect
     {
+        public const int AreaWidth = 160;
+        public const int AreaHeight = 560;
+        public const int SearchWidth = 64;
+        public const int SearchHeight = 16;
+
         private readonly OpenGLRenderer _renderer;
         private TextureStorage _outputTexture;
         private TextureStorage _searchTexture;
@@ -140,11 +145,14 @@ namespace Ryujinx.Graphics.OpenGL.Effects.Smaa
             _areaTexture = new TextureStorage(_renderer, areaInfo, 1);
             _searchTexture = new TextureStorage(_renderer, searchInfo, 1);
 
+            var areaTexture = EmbeddedResources.Read("Ryujinx.Graphics.OpenGL/Effects/Textures/smaa_blend.spirv");
+            var searchTexture = EmbeddedResources.Read("Ryujinx.Graphics.OpenGL/Effects/Textures/smaa_search_texture");
+
             var areaView = _areaTexture.CreateDefaultView();
             var searchView = _searchTexture.CreateDefaultView();
 
-            areaView.SetData(AreaTexture);
-            searchView.SetData(SearchTexBytes);
+            areaView.SetData(areaTexture);
+            searchView.SetData(searchTexture);
         }
 
         public TextureView Run(TextureView view, int width, int height)
@@ -211,7 +219,6 @@ namespace Ryujinx.Graphics.OpenGL.Effects.Smaa
             GL.DispatchCompute(dispatchX, dispatchY, 1);
             GL.MemoryBarrier(MemoryBarrierFlags.ShaderImageAccessBarrierBit);
 
-
             GL.BindImageTexture(0, textureView.Handle, 0, false, 0, TextureAccess.ReadWrite, SizedInternalFormat.Rgba8);
             GL.UseProgram(_neighbourShaderPrograms[Quality]);
             GL.ActiveTexture(TextureUnit.Texture0);
@@ -226,7 +233,6 @@ namespace Ryujinx.Graphics.OpenGL.Effects.Smaa
             GL.MemoryBarrier(MemoryBarrierFlags.ShaderImageAccessBarrierBit);
 
             (_renderer.Pipeline as Pipeline).RestoreImages1And2();
-
 
             GL.UseProgram(previousProgram);
 

@@ -166,9 +166,10 @@ namespace Ryujinx.Ava.Ui.ViewModels
         public string UpscaleLevelText => UpscaleLevel.ToString("0.00");
         public float UpscaleLevel
         {
-            get => upscaleLevel; set
+            get => _upscaleLevel;
+            set
             {
-                upscaleLevel = value;
+                _upscaleLevel = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(UpscaleLevelText));
             }
@@ -188,7 +189,8 @@ namespace Ryujinx.Ava.Ui.ViewModels
         }
         public int UpscaleType
         {
-            get => _upscaleType; set
+            get => _upscaleType;
+            set
             {
                 _upscaleType = value;
                 OnPropertyChanged();

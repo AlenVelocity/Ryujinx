@@ -269,6 +269,7 @@ namespace Ryujinx.Graphics.OpenGL
             if (_currentAntiAliasing == effect && _antiAliasing != null)
             {
                 _currentAntiAliasing = effect;
+
                 return;
             }
 
@@ -277,15 +278,16 @@ namespace Ryujinx.Graphics.OpenGL
             _updateEffect = true;
         }
 
-        public void SetUpscaler(UpscaleType scalerType)
+        public void SetUpscaler(UpscaleType type)
         {
-            if (_currentUpscaler == scalerType && _antiAliasing != null)
+            if (_currentUpscaler == type && _antiAliasing != null)
             {
-                _currentUpscaler = scalerType;
+                _currentUpscaler = type;
+
                 return;
             }
 
-            _currentUpscaler = scalerType;
+            _currentUpscaler = type;
 
             _updateUpscaler = true;
         }
@@ -387,7 +389,6 @@ namespace Ryujinx.Graphics.OpenGL
         public void SetUpscalerLevel(float level)
         {
             _upscalerLevel = level;
-
             _updateUpscaler = true;
         }
     }

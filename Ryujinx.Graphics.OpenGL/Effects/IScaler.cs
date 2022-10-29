@@ -22,6 +22,5 @@ namespace Ryujinx.Graphics.OpenGL.Effects
             int dstY1,
             bool flipX,
             bool flipY);
-
     }
 }
