@@ -48,7 +48,7 @@ namespace Ryujinx.Ava.Ui.ViewModels
         private KeyboardHotkeys _keyboardHotkeys;
         private int _graphicsBackendIndex;
         private int _upscaleType;
-        private float upscaleLevel;
+        private float _upscaleLevel;
 
         public int ResolutionScale
         {
