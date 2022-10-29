@@ -1376,28 +1376,27 @@ void SMAASeparatePS(float4 position,
 layout(rgba8, binding = 0, set = 3) uniform image2D imgOutput;
 
 layout(binding = 1, set = 2) uniform sampler2D inputImg;
-layout(binding = 3, set = 2) uniform sampler2D samplerBlend;
 layout( binding = 2 ) uniform invResolution
 {
     vec2 invResolution_data;
 };
 
-void main() {  
-  vec2 loc = ivec2(gl_GlobalInvocationID.x * 4, gl_GlobalInvocationID.y * 4);
-  for(int i = 0; i < 4; i++)
-  {
-      for(int j = 0; j < 4; j++)
-      {
-          ivec2 texelCoord = ivec2(loc.x + i, loc.y + j);
-          vec2 coord = vec2(texelCoord.x / invResolution_data.x, texelCoord.y / invResolution_data.y);
-          vec2 pixCoord;
-          vec4 offset;
-
-          SMAANeighborhoodBlendingVS(coord, offset);
-
-          vec4 oColor  = SMAANeighborhoodBlendingPS(coord, offset, inputImg, samplerBlend);
-
-          imageStore(imgOutput,  texelCoord, oColor);
-      }
-  }
+void main() 
+{
+	vec2 loc = ivec2(gl_GlobalInvocationID.x * 4, gl_GlobalInvocationID.y * 4);
+    for(int i = 0; i < 4; i++)
+    {
+        for(int j = 0; j < 4; j++)
+        {
+            ivec2 texelCoord = ivec2(loc.x + i, loc.y + j);
+            vec2 coord = vec2(texelCoord.x / invResolution_data.x, texelCoord.y / invResolution_data.y);
+            vec4 offset[3];
+            SMAAEdgeDetectionVS(coord, offset);
+            vec2 oColor = SMAAColorEdgeDetectionPS(coord, offset, inputTexture);
+            if (oColor != float2(-2.0, -2.0))
+            {
+              imageStore(imgOutput, texelCoord, vec4(oColor, 0.0, 1.0));
+            }
+		}
+	}
 }

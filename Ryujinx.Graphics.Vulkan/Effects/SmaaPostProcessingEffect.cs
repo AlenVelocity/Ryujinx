@@ -1,3 +1,4 @@
+using Ryujinx.Common;
 using Ryujinx.Graphics.GAL;
 using Ryujinx.Graphics.Shader;
 using Ryujinx.Graphics.Shader.Translation;
@@ -12,6 +13,11 @@ namespace Ryujinx.Graphics.Vulkan.Effects
 {
     internal partial class SmaaPostProcessingEffect : IPostProcessingEffect
     {
+        public const int AreaWidth = 160;
+        public const int AreaHeight = 560;
+        public const int SearchWidth = 64;
+        public const int SearchHeight = 16;
+
         private readonly VulkanRenderer _renderer;
         private ISampler _samplerLinear;
         private ShaderCollection _edgeProgram;
@@ -73,6 +79,10 @@ namespace Ryujinx.Graphics.Vulkan.Effects
             _blendPipeline.Initialize();
             _neighbourPipleline.Initialize();
 
+            var edgeShader = EmbeddedResources.Read("Ryujinx.Graphics.Vulkan/Shaders/smaa_edge.spirv");
+            var blendShader = EmbeddedResources.Read("Ryujinx.Graphics.Vulkan/Shaders/smaa_blend.spirv");
+            var neighbourShader = EmbeddedResources.Read("Ryujinx.Graphics.Vulkan/Shaders/smaa_neighbour.spirv");
+
             var edgeBindings = new ShaderBindings(
                 new[] { 2 },
                 Array.Empty<int>(),
@@ -121,17 +131,17 @@ namespace Ryujinx.Graphics.Vulkan.Effects
 
             _edgeProgram = _renderer.CreateProgramWithMinimalLayout(new[]
             {
-                new ShaderSource(this.SmaaEdgeShader, edgeBindings, ShaderStage.Compute, TargetLanguage.Spirv)
+                new ShaderSource(edgeShader, edgeBindings, ShaderStage.Compute, TargetLanguage.Spirv)
             }, new[] { specializationInfo });
 
             _blendProgram = _renderer.CreateProgramWithMinimalLayout(new[]
             {
-                new ShaderSource(this.SmaaBlendShader, blendBindings, ShaderStage.Compute, TargetLanguage.Spirv)
+                new ShaderSource(blendShader, blendBindings, ShaderStage.Compute, TargetLanguage.Spirv)
             }, new[] { specializationInfo });
 
             _neighbourProgram = _renderer.CreateProgramWithMinimalLayout(new[]
             {
-                new ShaderSource(this.SmaaNeighbourShader, neighbourBindings, ShaderStage.Compute, TargetLanguage.Spirv)
+                new ShaderSource(neighbourShader, neighbourBindings, ShaderStage.Compute, TargetLanguage.Spirv)
             }, new[] { specializationInfo });
         }
 
@@ -179,11 +189,14 @@ namespace Ryujinx.Graphics.Vulkan.Effects
                 SwizzleComponent.Blue,
                 SwizzleComponent.Alpha);
 
+            var areaTexture = EmbeddedResources.Read("Ryujinx.Graphics.Vulkan/Effects/Textures/smaa_blend.spirv");
+            var ssearchTexBytes = EmbeddedResources.Read("Ryujinx.Graphics.Vulkan/Effects/Textures/smaa_search_texture");
+
             _areaTexture = _renderer.CreateTexture(areaInfo, 1) as TextureView;
             _searchTexture = _renderer.CreateTexture(searchInfo, 1) as TextureView;
 
-            _areaTexture.SetData(AreaTexture);
-            _searchTexture.SetData(SearchTexBytes);
+            _areaTexture.SetData(areaTexture);
+            _searchTexture.SetData(ssearchTexBytes);
         }
 
         public TextureView Run(TextureView view, CommandBufferScoped cbs, int width, int height)
