@@ -78,7 +78,7 @@ namespace Ryujinx.Graphics.Vulkan
 
             for (int i = 0; i < shaders.Length; i++)
             {
-                var shader = new Shader(gd.Api, device, shaders[i]);
+                var shader = new Shader(gd.Api, device, shaders[i], specializationInfos != null ? specializationInfos[i] : null);
 
                 stages |= 1u << shader.StageFlags switch
                 {
