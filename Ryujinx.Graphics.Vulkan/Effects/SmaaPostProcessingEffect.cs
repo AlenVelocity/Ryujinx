@@ -133,17 +133,17 @@ namespace Ryujinx.Graphics.Vulkan.Effects
             _edgeProgram = _renderer.CreateProgramWithMinimalLayout(new[]
             {
                 new ShaderSource(edgeShader, edgeBindings, ShaderStage.Compute, TargetLanguage.Spirv)
-            }, new[] { specializationInfo });
+            });
 
             _blendProgram = _renderer.CreateProgramWithMinimalLayout(new[]
             {
                 new ShaderSource(blendShader, blendBindings, ShaderStage.Compute, TargetLanguage.Spirv)
-            }, new[] { specializationInfo });
+            });
 
             _neighbourProgram = _renderer.CreateProgramWithMinimalLayout(new[]
             {
                 new ShaderSource(neighbourShader, neighbourBindings, ShaderStage.Compute, TargetLanguage.Spirv)
-            }, new[] { specializationInfo });
+            });
         }
 
         public void DeletePipelines()
